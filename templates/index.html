@@ -13,6 +13,7 @@
       border: 0;
       outline: 0;
       user-select: none;
+      font-size: 1rem;
     }
 
     body {
@@ -32,7 +33,6 @@
           padding: .5rem;
           border-radius: : .25rem;
           width: 75%;
-
 
           /* Style the button that is used to open and close the collapsible content */
           >.collapsible {
@@ -76,6 +76,7 @@
 
               >table {
                 width: : 50%;
+                font-size: .75rem;
 
                 >tr {
                   display: flex;
@@ -94,6 +95,24 @@
             }
           }
         }
+      }
+    }
+
+    @media only screen and (max-width: 1000px) {
+      body {
+        >.base {
+          .main {
+            width: 100%;
+          }
+        }
+      }
+
+      .base-container {
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 15px;
+
+
       }
     }
   </style>
@@ -140,9 +159,9 @@
             </tr>
           </table>
           <code>
-            curl -X POST "https://we-love-gpt.onrender.com/api/chat" \ -H "Content-Type:
-            application/json" \ -d '{ "messages": { "role": "user", "content":
-            "Hello, world!" } }'
+            curl -X POST "https://we-love-gpt.onrender.com/api/chat" \ -H
+            "Content-Type: application/json" \ -d '{ "messages": { "role":
+            "user", "content": "Hello, world!" } }'
           </code>
         </div>
       </div>
@@ -168,7 +187,9 @@
               <td>Optional</td>
             </tr>
           </table>
-          <code> https://we-love-gpt.onrender.com/api/chat?message=hello </code>
+          <code>
+            https://we-love-gpt.onrender.com/api/chat?message=hello
+          </code>
         </div>
       </div>
       <!--div class="collapsible">
@@ -197,6 +218,8 @@
         </div>
       </div>
     </div>
+    <h3>API Created under MPOP Reverse II</h3>
+    <h5>API is not for sale, use for educational purposes.</h5>
   </div>
 </body>
 <script>
@@ -219,16 +242,19 @@
     {
       name: "gpt-3.5-turbo",
       prov: "OpenAI",
-    }, {
+    },
+    {
       name: "gpt-4",
-      prov: "OpenAI"
-    }, {
+      prov: "OpenAI",
+    },
+    {
       name: "gpt-4o-mini",
-      prov: "OpenAI"
-    }, {
+      prov: "OpenAI",
+    },
+    {
       name: "io",
-      prov: "OpenAI"
-    }
+      prov: "OpenAI",
+    },
   ];
   for (let i of gpts) {
     const tr = document.createElement("tr");

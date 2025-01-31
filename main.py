@@ -40,4 +40,5 @@ def chat():
     return {"status": 200, "response": response.choices[0].message.content}
 
 
-app.run("0.0.0.0", 3000)
+if __name__ == "__main__":
+    app.run("0.0.0.0", 3000)
