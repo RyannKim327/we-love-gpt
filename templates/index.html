@@ -1,201 +1,245 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>G4F Documentation</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        border: 0;
-        outline: 0;
-        user-select: none;
-      }
 
-      body {
-        height: 100dvh;
-        width: 100dvw;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>G4F Documentation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      border: 0;
+      outline: 0;
+      user-select: none;
+    }
 
-        >.base {
-          display: flex;
-          flex-direction: column;
+    body {
+      height: 100dvh;
+      width: 100dvw;
 
-          width: 100%;
-          align-items: center;
+      >.base {
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+        align-items: center;
+        padding: .5rem;
+
+        >.main {
+          background-color: rgba(33, 33, 33, 0.1);
           padding: .5rem;
-
-          >.main {
-            background-color: rgba(33, 33, 33, 0.1);
-            padding: .5rem;
-            border-radius: : .25rem;
-            width: 75%;
+          border-radius: : .25rem;
+          width: 75%;
 
 
-            /* Style the button that is used to open and close the collapsible content */
-            >.collapsible {
-              background-color: #333;
-              color: #fff;
-              cursor: pointer;
-              padding: 18px;
-              width: 100%;
-              border: none;
-              text-align: left;
-              outline: none;
-              font-size: 15px;
-              margin: .15rem 0;
-            }
+          /* Style the button that is used to open and close the collapsible content */
+          >.collapsible {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            margin: .15rem 0;
+          }
 
-            /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-            >.active,
-            >.collapsible:hover {
-              background-color: #505050;
-            }
+          /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+          >.active,
+          >.collapsible:hover {
+            background-color: #505050;
+          }
 
-            /* Style the collapsible content. Note: hidden by default */
-            >.content {
-              padding: 0 .5rem;
-              overflow: hidden;
-              background-color: #dedede;
-              color: #000;
-              max-height: 0;
-              overflow: hidden;
-              transition: max-height 0.2s ease-out;
-              width: 100%;
+          /* Style the collapsible content. Note: hidden by default */
+          >.content {
+            padding: 0 .5rem;
+            overflow: hidden;
+            background-color: #dedede;
+            color: #000;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            width: 100%;
 
-              >.base-container {
-                display: flex;
-                padding: .5rem;
+            >.base-container {
+              display: flex;
+              padding: .5rem;
+              justify-content: space-between;
 
-                >* {
-                  flex: 1;
-                }
+              >* {
+                flex: 1;
+              }
 
-                >table {
-                  width: : 50%;
+              >table {
+                width: : 50%;
 
-                  >tr {
-                    display: flex;
+                >tr {
+                  display: flex;
 
-                    >* {
-                      flex: 1;
-                    }
+                  >* {
+                    flex: 1;
                   }
                 }
+              }
 
-                >code {
-                  font-size: 1.25rem;
-                  font-weight: bolder;
+              >code {
+                font-size: 1.25rem;
+                font-weight: bolder;
 
-                }
               }
             }
           }
         }
       }
-    </style>
-  </head>
+    }
+  </style>
+</head>
 
-  <body>
-    <div class="base">
-      <div class="main">
-        <div class="collapsible">
-          <h3>POST: /api/chat</h3>
+<body>
+  <div class="base">
+    <div class="main">
+      <div class="collapsible">
+        <h3>POST: /api/chat</h3>
+      </div>
+      <div class="content">
+        <div class="base-container">
+          <table>
+            <tr>
+              <th>Parameter</th>
+              <th>Type</th>
+              <th>Optional/Value</th>
+            </tr>
+            <tr>
+              <td>messages</td>
+              <td>JSON Array</td>
+              <td>Required</td>
+            </tr>
+            <tr>
+              <td>websearch</td>
+              <td>Boolean</td>
+              <td>Optional</td>
+            </tr>
+            <tr>
+              <th colspan="3" style="text-align: center; padding: 0.5rem">
+                <h3>Parameters of messages</h3>
+              </th>
+            </tr>
+            <tr>
+              <td>role</td>
+              <td>String</td>
+              <td>user | system | assistant</td>
+            </tr>
+            <tr>
+              <td>content</td>
+              <td>String</td>
+              <td>Required</td>
+            </tr>
+          </table>
+          <code>
+            curl -X POST "https://we-love-gpt.onrender.com/api/chat" \ -H "Content-Type:
+            application/json" \ -d '{ "messages": { "role": "user", "content":
+            "Hello, world!" } }'
+          </code>
         </div>
-        <div class="content">
-          <div class="base-container">
-            <table>
-              <tr>
-                <th>Parameter</th>
-                <th>Type</th>
-                <th>Optional/Value</th>
-              </tr>
-              <tr>
-                <td>messages</td>
-                <td>JSON Array</td>
-                <td>Required</td>
-              </tr>
-              <tr>
-                <td>websearch</td>
-                <td>Boolean</td>
-                <td>Optional</td>
-              </tr>
-              <tr>
-                <th colspan="3" style="text-align: center; padding: 0.5rem">
-                  <h3>Parameters of messages</h3>
-                </th>
-              </tr>
-              <tr>
-                <td>role</td>
-                <td>String</td>
-                <td>user | system | assistant</td>
-              </tr>
-              <tr>
-                <td>content</td>
-                <td>String</td>
-                <td>Required</td>
-              </tr>
-            </table>
-            <code>
-              curl -X POST "endpoint/api/chat" \ -H "Content-Type:
-              application/json" \ -d '{ "messages": { "role": "user", "content":
-              "Hello, world!" } }'
-            </code>
-          </div>
+      </div>
+      <div class="collapsible">
+        <h3>GET: /api/chat</h3>
+      </div>
+      <div class="content">
+        <div class="base-container">
+          <table>
+            <tr>
+              <th>Parameter</th>
+              <th>Type</th>
+              <th>Optional/Value</th>
+            </tr>
+            <tr>
+              <td>message</td>
+              <td>String</td>
+              <td>Required</td>
+            </tr>
+            <tr>
+              <td>websearch</td>
+              <td>Boolean</td>
+              <td>Optional</td>
+            </tr>
+          </table>
+          <code> https://we-love-gpt.onrender.com/api/chat?message=hello </code>
         </div>
-        <div class="collapsible">
-          <h3>GET: /api/chat</h3>
-        </div>
-        <div class="content">
-          <div class="base-container">
-            <table>
+      </div>
+      <!--div class="collapsible">
+        <h3>Models</h3>
+      </div>
+      <div class="content">
+        <div class="base-container">
+          <table>
+            <tbody id="gpts">
               <tr>
-                <th>Parameter</th>
-                <th>Type</th>
-                <th>Optional/Value</th>
+                <th>Model</th>
+                <th>Provider</th>
               </tr>
-              <tr>
-                <td>message</td>
-                <td>String</td>
-                <td>Required</td>
-              </tr>
-              <tr>
-                <td>websearch</td>
-                <td>Boolean</td>
-                <td>Optional</td>
-              </tr>
-            </table>
-            <code> endpoint/api/chat?message=hello </code>
-          </div>
+            </tbody>
+          </table>
         </div>
-        <div class="collapsible">
-          <h3>Result</h3>
-        </div>
-        <div class="content">
-          <div class="base-container">
-            <code>
-              {<br />&emsp;"status": 200,<br />&emsp;"response": "Hello"<br />}
-            </code>
-          </div>
+      </div --->
+      <div class="collapsible">
+        <h3>Result</h3>
+      </div>
+      <div class="content">
+        <div class="base-container">
+          <code>
+            {<br />&emsp;"status": 200,<br />&emsp;"response": "Hello"<br />}
+          </code>
         </div>
       </div>
     </div>
-  </body>
-  <script>
-    let coll = document.getElementsByClassName("collapsible");
-    let i;
+  </div>
+</body>
+<script>
+  let coll = document.getElementsByClassName("collapsible");
+  let i;
 
-    for (i = 0; i < coll.length; i++) {
-      coll[i].addEventListener("click", function () {
-        this.classList.toggle("active");
-        let content = this.nextElementSibling;
-        if (content.style.maxHeight) {
-          content.style.maxHeight = null;
-        } else {
-          content.style.maxHeight = content.scrollHeight + "px";
-        }
-      });
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      let content = this.nextElementSibling;
+      if (content.style.maxHeight) {
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      }
+    });
+  }
+  const table = document.getElementById("gpts");
+  const gpts = [
+    {
+      name: "gpt-3.5-turbo",
+      prov: "OpenAI",
+    }, {
+      name: "gpt-4",
+      prov: "OpenAI"
+    }, {
+      name: "gpt-4o-mini",
+      prov: "OpenAI"
+    }, {
+      name: "io",
+      prov: "OpenAI"
     }
-  </script>
+  ];
+  for (let i of gpts) {
+    const tr = document.createElement("tr");
+    const name = document.createElement("td");
+    const prov = document.createElement("td");
+    name.textContent = i.name;
+    prov.textContent = i.prov;
+    tr.appendChild(name);
+    tr.appendChild(prov);
+    table.appendChild(tr);
+  }
+</script>
+
 </html>

@@ -4,6 +4,11 @@ from g4f.client import Client
 app = Flask(__name__)
 
 
+@app.route("/")
+def main():
+    return app1()
+
+
 @app.route("/api")
 def app1():
     return render_template("index.html")
