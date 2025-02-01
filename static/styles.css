@@ -117,7 +117,7 @@ body {
 
               pre {
                 position: relative;
-                /* user-select: text; */
+                margin: 0.25rem 0;
                 display: block;
                 background-color: #cacaca;
                 border-radius: 0.25rem;
@@ -125,6 +125,7 @@ body {
                 font-family: "Times New Roman", Times, serif;
 
                 >.copy {
+                  opacity: 0.5;
                   position: absolute;
                   top: 5px;
                   right: 5px;
@@ -138,7 +139,6 @@ body {
                   display: block;
                   width: 100%;
                   overflow-x: auto;
-                  /* user-select: text; */
                   background-color: transparent;
                   color: #000;
                 }

@@ -39,13 +39,13 @@ if (msgs) {
     document.querySelectorAll("pre code").forEach((block) => {
       const pre = block.parentElement;
       const btn = document.createElement("button");
-      btn.textContent = "Copy";
+      btn.innerHTML = "Copy <i class='fa-regular fa-copy'></i>";
       btn.classList.add("copy");
       btn.onclick = () => {
         navigator.clipboard.writeText(block.textContent);
-        btn.textContent = "Copied";
+        btn.innerHTML = "Copied <i class='fa-solid fa-clipboard'></i>";
         setTimeout(() => {
-          btn.textContent = "Copy";
+          btn.innerHTML = "Copy <i class='fa-regular fa-copy'></i>";
         }, 2500);
       };
       // pre.style.position = "relative";
@@ -102,13 +102,13 @@ async function _() {
         document.querySelectorAll("pre code").forEach((block) => {
           const pre = block.parentElement;
           const btn = document.createElement("button");
-          btn.textContent = "Copy";
+          btn.innerHTML = "Copy <i class='fa-regular fa-copy'></i>";
           btn.classList.add("copy");
           btn.onclick = () => {
             navigator.clipboard.writeText(block.textContent);
-            btn.textContent = "Copied";
+            btn.innerHTML = "Copied <i class='fa-solid fa-clipboard'></i>";
             setTimeout(() => {
-              btn.textContent = "Copy";
+              btn.innerHTML = "Copy <i class='fa-regular fa-copy'></i>";
             }, 2500);
           };
           // pre.style.position = "relative";
