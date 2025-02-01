@@ -48,6 +48,7 @@ async function _() {
       document.getElementById("live").innerHTML = "";
       // localStorage.setItem("messages", JSON.stringify([]));
       localStorage.removeItem("messages");
+      y.focus();
     }
     y.value = "";
   } else {
