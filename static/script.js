@@ -14,7 +14,7 @@ for (i = 0; i < coll.length; i++) {
     } else {
       content.style.maxHeight = content.scrollHeight + "px";
       if (content.children[0].id == "live") {
-        content.style.maxHeight = `calc(${content.scrollHeight}px + 10rem)`;
+        content.style.maxHeight = `calc(${content.scrollHeight}px + 25rem)`;
       }
     }
   });

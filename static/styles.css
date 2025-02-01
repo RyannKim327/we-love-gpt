@@ -100,7 +100,7 @@ body {
 
         >#live {
           background-color: #dedede;
-          height: 10rem;
+          height: 25rem;
           overflow-y: scroll;
 
           >div {
