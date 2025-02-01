@@ -35,6 +35,22 @@ if (msgs) {
 
     base.appendChild(msg);
     live.appendChild(base);
+
+    document.querySelectorAll("pre code").forEach((block) => {
+      const pre = block.parentElement;
+      const btn = document.createElement("button");
+      btn.textContent = "Copy";
+      btn.classList.add("copy");
+      btn.onclick = () => {
+        navigator.clipboard.writeText(block.textContent);
+        btn.textContent = "Copied";
+        setTimeout(() => {
+          btn.textContent = "Copy";
+        }, 2500);
+      };
+      // pre.style.position = "relative";
+      pre.appendChild(btn);
+    });
   }
 }
 
@@ -83,6 +99,21 @@ async function _() {
 
         base.classList.add("bot");
         msg.innerHTML = marked.parse(res.response);
+        document.querySelectorAll("pre code").forEach((block) => {
+          const pre = block.parentElement;
+          const btn = document.createElement("button");
+          btn.textContent = "Copy";
+          btn.classList.add("copy");
+          btn.onclick = () => {
+            navigator.clipboard.writeText(block.textContent);
+            btn.textContent = "Copied";
+            setTimeout(() => {
+              btn.textContent = "Copy";
+            }, 2500);
+          };
+          // pre.style.position = "relative";
+          pre.appendChild(btn);
+        });
 
         base.appendChild(msg);
         live.appendChild(base);
