@@ -100,8 +100,8 @@ body {
 
         >#live {
           background-color: #dedede;
-          height: 25rem;
           overflow-y: scroll;
+          box-sizing: border-box;
 
           >div {
             display: flex;
