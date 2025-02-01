@@ -14,6 +14,15 @@ def app1():
     return render_template("index.html")
 
 
+@app.errorhandler(404)
+def error(err):
+    return {
+        "status": 404,
+        "response": "Page not found, kindly check to our documentation",
+        "redirect": "https://we-love-gpt.onrender.com",
+    }
+
+
 @app.route("/api/chat/", methods=["POST", "GET"])
 def chat():
     if request.method == "POST":

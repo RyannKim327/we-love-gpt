@@ -44,12 +44,9 @@ async function _() {
   if (y.value.length < 2) {
     alert("Please provide text");
   } else if (y.value.startsWith("/")) {
-    switch (y.value.toLowerCase().trim()) {
-      case "/clear":
-      case "/cls":
-        document.getElementById("live").innerHTML = "";
-        localStorage.setItem("messages", "[]");
-        break;
+    if (y.value.startsWith("/clear") || y.value.startsWith("/cls")) {
+      document.getElementById("live").innerHTML = "";
+      localStorage.setItem("messages", JSON.stringify([]));
     }
     y.value = "";
   } else {
@@ -100,7 +97,8 @@ async function _() {
           role: "system",
           content: res.response,
         });
-        localStorage.setItem("messages", JSON.stringify(msgs));
+        localStorage.setItem("messages", JSON.stringify(msgs, null, 2));
+        y.focus();
       })
       .catch((error) => {
         alert(
