@@ -46,7 +46,8 @@ async function _() {
   } else if (y.value.startsWith("/")) {
     if (y.value.startsWith("/clear") || y.value.startsWith("/cls")) {
       document.getElementById("live").innerHTML = "";
-      localStorage.setItem("messages", JSON.stringify([]));
+      // localStorage.setItem("messages", JSON.stringify([]));
+      localStorage.removeItem("messages");
     }
     y.value = "";
   } else {
