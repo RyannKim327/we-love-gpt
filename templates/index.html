@@ -5,122 +5,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Welcome to my Vlogg</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      border: 0;
-      outline: 0;
-      user-select: none;
-      font-size: 1rem;
-    }
-
-    body {
-      height: 100dvh;
-      width: 100dvw;
-
-      >.base {
-        display: flex;
-        flex-direction: column;
-
-        width: 100%;
-        align-items: center;
-        padding: .5rem;
-
-        >.main {
-          background-color: rgba(33, 33, 33, 0.1);
-          padding: .5rem;
-          border-radius: : .25rem;
-          width: 75%;
-
-          /* Style the button that is used to open and close the collapsible content */
-          >.collapsible {
-            background-color: #333;
-            color: #fff;
-            cursor: pointer;
-            padding: 18px;
-            width: 100%;
-            border: none;
-            text-align: left;
-            outline: none;
-            font-size: 15px;
-            margin: .15rem 0;
-          }
-
-          /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-          >.active,
-          >.collapsible:hover {
-            background-color: #505050;
-          }
-
-          /* Style the collapsible content. Note: hidden by default */
-          >.content {
-            padding: 0 .5rem;
-            overflow: hidden;
-            background-color: #dedede;
-            color: #000;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.2s ease-out;
-            width: 100%;
-
-            >.base-container {
-              display: flex;
-              padding: .5rem;
-              justify-content: space-between;
-
-              >* {
-                flex: 1;
-              }
-
-              >table {
-                width: : 50%;
-                font-size: .75rem;
-
-                >tr {
-                  display: flex;
-
-                  >* {
-                    flex: 1;
-                  }
-                }
-              }
-
-              >code {
-                font-size: 1.25rem;
-                font-weight: bolder;
-
-              }
-            }
-          }
-        }
-      }
-    }
-
-    @media only screen and (max-width: 1000px) {
-      body {
-        >.base {
-          .main {
-            width: 100%;
-          }
-        }
-      }
-
-      .base-container {
-        flex-direction: column;
-        flex-wrap: wrap;
-        gap: 15px;
-
-
-      }
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="static/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body>
   <div class="base">
     <div class="main">
+      <div class="header">
+        <h3>We Love GPT API Documentation</h3>
+      </div>
       <div class="collapsible">
         <h3>POST: /api/chat</h3>
       </div>
@@ -192,21 +86,6 @@
           </code>
         </div>
       </div>
-      <!--div class="collapsible">
-        <h3>Models</h3>
-      </div>
-      <div class="content">
-        <div class="base-container">
-          <table>
-            <tbody id="gpts">
-              <tr>
-                <th>Model</th>
-                <th>Provider</th>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div --->
       <div class="collapsible">
         <h3>Result</h3>
       </div>
@@ -217,55 +96,23 @@
           </code>
         </div>
       </div>
+      <div class="collapsible">
+        <h3>Try: Test conversation</h3>
+      </div>
+      <div class="content convo">
+        <div id="live"></div>
+        <div class="chat">
+          <textarea placeholder="Enter your message here" rows="5" type="text" id="send"></textarea>
+          <button id="send-button">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
     </div>
     <h3>API Created under MPOP Reverse II</h3>
     <h5>API is not for sale, use for educational purposes.</h5>
   </div>
 </body>
-<script>
-  let coll = document.getElementsByClassName("collapsible");
-  let i;
-
-  for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function () {
-      this.classList.toggle("active");
-      let content = this.nextElementSibling;
-      if (content.style.maxHeight) {
-        content.style.maxHeight = null;
-      } else {
-        content.style.maxHeight = content.scrollHeight + "px";
-      }
-    });
-  }
-  const table = document.getElementById("gpts");
-  const gpts = [
-    {
-      name: "gpt-3.5-turbo",
-      prov: "OpenAI",
-    },
-    {
-      name: "gpt-4",
-      prov: "OpenAI",
-    },
-    {
-      name: "gpt-4o-mini",
-      prov: "OpenAI",
-    },
-    {
-      name: "io",
-      prov: "OpenAI",
-    },
-  ];
-  for (let i of gpts) {
-    const tr = document.createElement("tr");
-    const name = document.createElement("td");
-    const prov = document.createElement("td");
-    name.textContent = i.name;
-    prov.textContent = i.prov;
-    tr.appendChild(name);
-    tr.appendChild(prov);
-    table.appendChild(tr);
-  }
-</script>
+<script src="/static/script.js"></script>
 
 </html>

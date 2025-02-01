@@ -1,0 +1,191 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+  outline: 0;
+  user-select: none;
+  font-size: 1rem;
+  resize: none;
+}
+
+body {
+  height: 100dvh;
+  width: 100dvw;
+
+  >.base {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    align-items: center;
+    padding: 0.5rem;
+
+    >.main {
+      background-color: rgba(33, 33, 33, 0.1);
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      width: 75%;
+
+      .header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.5rem 0;
+      }
+
+      >.collapsible {
+        background-color: #333;
+        color: #fff;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        margin: 0.15rem 0;
+      }
+
+      >.active,
+      >.collapsible:hover {
+        background-color: #505050;
+      }
+
+      >.content {
+        padding: 0 0.5rem;
+        overflow: hidden;
+        background-color: #dedede;
+        color: #000;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+        width: 100%;
+
+        >.base-container {
+          display: flex;
+          padding: 0.5rem;
+          justify-content: space-between;
+
+          >* {
+            flex: 1;
+          }
+
+          >table {
+            width: 50%;
+            font-size: 0.75rem;
+
+            >tr {
+              display: flex;
+
+              >* {
+                flex: 1;
+              }
+            }
+          }
+
+          >code {
+            font-size: 1.25rem;
+            font-weight: bolder;
+          }
+        }
+      }
+
+      >.convo {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        >#live {
+          background-color: #dedede;
+          height: 10rem;
+          overflow-y: scroll;
+
+          >div {
+            display: flex;
+            flex-direction: row;
+            padding: 0.5rem 0.25rem;
+
+            >span {
+              background-color: #555;
+              color: white;
+              padding: 0.1rem 0.5rem;
+              border-radius: 0.25rem;
+
+              pre {
+                display: block;
+                background-color: #cacaca;
+                border-radius: 0.25rem;
+
+                >code {
+                  background-color: transparent;
+                  color: #000;
+                }
+              }
+
+              a {
+                color: white;
+                text-decoration: none;
+                border-bottom: 1px white solid;
+                padding-bottom: 3px;
+              }
+            }
+          }
+
+          >.you {
+            justify-content: flex-end;
+
+            >span {
+              background-color: #fff;
+              color: #000;
+            }
+          }
+        }
+
+        >.chat {
+          display: flex;
+          width: 100%;
+          background-color: rgba(33, 33, 33, 0.1);
+          align-items: flex-end;
+          border-radius: 0.25rem;
+          margin: 0.125rem 0;
+
+          >textarea {
+            padding: 0.25rem 0.5rem;
+            font-size: 1rem;
+            background-color: transparent;
+            width: 100%;
+            box-sizing: border-box;
+          }
+
+          >button {
+            background-color: transparent;
+
+            >i {
+              padding: 0.5rem;
+              font-size: 1.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  body {
+    >.base {
+      .main {
+        width: 100%;
+      }
+    }
+  }
+
+  .base-container {
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+}
