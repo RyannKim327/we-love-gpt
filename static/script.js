@@ -1,8 +1,6 @@
 let coll = document.getElementsByClassName("collapsible");
 let i;
 
-let msgs = JSON.parse(localStorage.getItem("messages")) ?? [];
-
 const x = document.getElementById("send-button");
 
 for (i = 0; i < coll.length; i++) {
@@ -20,6 +18,8 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 
+let msgs = JSON.parse(localStorage.getItem("messages")) ?? [];
+
 if (msgs) {
   for (let i of msgs) {
     const live = document.getElementById("live");
@@ -35,23 +35,21 @@ if (msgs) {
 
     base.appendChild(msg);
     live.appendChild(base);
-
-    document.querySelectorAll("pre code").forEach((block) => {
-      const pre = block.parentElement;
-      const btn = document.createElement("button");
-      btn.innerHTML = "Copy <i class='fa-regular fa-copy'></i>";
-      btn.classList.add("copy");
-      btn.onclick = () => {
-        navigator.clipboard.writeText(block.textContent);
-        btn.innerHTML = "Copied <i class='fa-solid fa-clipboard'></i>";
-        setTimeout(() => {
-          btn.innerHTML = "Copy <i class='fa-regular fa-copy'></i>";
-        }, 2500);
-      };
-      // pre.style.position = "relative";
-      pre.appendChild(btn);
-    });
   }
+  document.querySelectorAll("pre code").forEach((block) => {
+    const pre = block.parentElement;
+    const btn = document.createElement("button");
+    btn.innerHTML = "Copy <i class='fa-solid fa-copy'></i>";
+    btn.classList.add("copy");
+    btn.onclick = () => {
+      navigator.clipboard.writeText(block.textContent);
+      btn.innerHTML = "Copied <i class='fa-solid fa-check'></i>";
+      setTimeout(() => {
+        btn.innerHTML = "Copy <i class='fa-solid fa-copy'></i>";
+      }, 2500);
+    };
+    pre.appendChild(btn);
+  });
 }
 
 async function _() {
@@ -99,21 +97,24 @@ async function _() {
 
         base.classList.add("bot");
         msg.innerHTML = marked.parse(res.response);
-        document.querySelectorAll("pre code").forEach((block) => {
-          const pre = block.parentElement;
-          const btn = document.createElement("button");
-          btn.innerHTML = "Copy <i class='fa-regular fa-copy'></i>";
-          btn.classList.add("copy");
-          btn.onclick = () => {
-            navigator.clipboard.writeText(block.textContent);
-            btn.innerHTML = "Copied <i class='fa-solid fa-clipboard'></i>";
-            setTimeout(() => {
-              btn.innerHTML = "Copy <i class='fa-regular fa-copy'></i>";
-            }, 2500);
-          };
-          // pre.style.position = "relative";
-          pre.appendChild(btn);
-        });
+
+        setTimeout(() => {
+          document.querySelectorAll("pre code").forEach((block) => {
+            const pre = block.parentElement;
+            const btn = document.createElement("button");
+            btn.innerHTML = "Copy <i class='fa-solid fa-copy'></i>";
+            btn.classList.add("copy");
+            btn.onclick = () => {
+              navigator.clipboard.writeText(block.textContent);
+              btn.innerHTML = "Copied <i class='fa-solid fa-check'></i>";
+              setTimeout(() => {
+                btn.innerHTML = "Copy <i class='fa-solid fa-copy'></i>";
+              }, 2500);
+            };
+            // pre.style.position = "relative";
+            pre.appendChild(btn);
+          });
+        }, 500);
 
         base.appendChild(msg);
         live.appendChild(base);
@@ -146,6 +147,8 @@ async function _() {
 }
 
 x.addEventListener("click", (event) => {
+  msgs = JSON.parse(localStorage.getItem("messages")) ?? [];
+
   const y = document.getElementById("send");
   msgs.push({
     role: "user",
@@ -165,6 +168,8 @@ x.addEventListener("click", (event) => {
 });
 
 document.getElementById("send").addEventListener("keyup", (event) => {
+  msgs = JSON.parse(localStorage.getItem("messages")) ?? [];
+
   const y = document.getElementById("send");
   if (event.keyCode === 13) {
     event.preventDefault();

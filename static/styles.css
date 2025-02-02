@@ -116,19 +116,17 @@ body {
               max-width: 75%;
 
               pre {
-                position: relative;
                 margin: 0.25rem 0;
-                display: block;
+                display: flex;
+                flex-direction: column-reverse;
                 background-color: #cacaca;
                 border-radius: 0.25rem;
+                align-items: flex-end;
                 overflow-x: hidden;
                 font-family: "Times New Roman", Times, serif;
 
                 >.copy {
                   opacity: 0.5;
-                  position: absolute;
-                  top: 5px;
-                  right: 5px;
                   background-color: rgba(33, 33, 33, 0.7);
                   padding: 0.15rem 0.5rem;
                   border-radius: 0.25rem;
