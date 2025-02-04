@@ -37,16 +37,29 @@ def chat():
         return {"status": 200, "response": response.choices[0].message.content}
 
     req = request.args
+    messages = []
+    if req and "user" in req:
+        messages.append({"role": "user", "content": str(req.get("message"))})
+    else:
+        messages = [{"role": "user", "content": str(req.get("message"))}]
     websearch = False
     if req and "websearch" in req:
         websearch = req.get("websearch")
     client = Client()
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role": "user", "content": str(req.get("message"))}],
+        messages=messages,
         web_search=websearch,
     )
-    return {"status": 200, "response": response.choices[0].message.content}
+
+    if req and "user" in req:
+        messages.append(
+            {
+                "role": "system",
+                "content": response.choices[0].message.content,
+            }
+        )
+    return {"status": 200, "response": response.choices[0].message.content}, 200
 
 
 if __name__ == "__main__":
