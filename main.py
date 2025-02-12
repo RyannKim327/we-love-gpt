@@ -52,8 +52,11 @@ def chat():
             gist = fetch_gist()
             base = gist
             # if req.get("u") in gist["users"]:
-            if gist["prompts"][req.get("u")]:
-                msgs = gist["prompts"][req.get("u")]
+            try:
+                if gist["prompts"][req.get("u")]:
+                    msgs = gist["prompts"][req.get("u")]
+            except:
+                gist["prompts"][req.get("u")] = []
 
         websearch = False
 
