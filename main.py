@@ -1,5 +1,13 @@
+import json
+
+import g4f
+import requests as req
 from flask import Flask, render_template, request
 from g4f.client import Client
+from g4f.Provider.Blackbox import Blackbox
+from werkzeug.datastructures import headers
+
+from utils.gist import fetch_gist, update_gist
 
 app = Flask(__name__, static_url_path="/static")
 
@@ -35,32 +43,52 @@ def chat():
             model="gpt-4o-mini", messages=req["messages"], web_search=websearch
         )
         return {"status": 200, "response": response.choices[0].message.content}
-
-    req = request.args
-    messages = []
-    if req and "user" in req:
-        messages.append({"role": "user", "content": str(req.get("message"))})
     else:
-        messages = [{"role": "user", "content": str(req.get("message"))}]
-    websearch = False
-    if req and "websearch" in req:
-        websearch = req.get("websearch")
-    client = Client()
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=messages,
-        web_search=websearch,
-    )
+        base = {}
+        req = request.args
+        msgs = [{"role": "user", "content": str(req.get("message"))}]
 
-    if req and "user" in req:
-        messages.append(
-            {
-                "role": "system",
-                "content": response.choices[0].message.content,
-            }
+        if req and "u" in req:
+            gist = fetch_gist()
+            base = gist
+            # if req.get("u") in gist["users"]:
+            if gist.get("prompts").get(req.get("u")):
+                msgs = gist.get("prompts").get(req.get("u"))
+
+        websearch = False
+
+        if req and "websearch" in req:
+            websearch = req.get("websearch")
+
+        client = Client()
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=msgs,
+            web_search=websearch,
         )
-    return {"status": 200, "response": response.choices[0].message.content}, 200
 
+        if req and "u" in req:
+            msgs.append(
+                {
+                    "role": "system",
+                    "content": response.choices[0].message.content,
+                }
+            )
+            base["prompts"][req.get("u")] = msgs
+            # gist.get("prompt").get(req.get("u")) = msgs
+            update_gist(base)
+        return {"status": 200, "response": response.choices[0].message.content}, 200
+
+
+# @app.route("/api/vision/", methods=["GET"])
+# def vision():
+#     req = request.get_json()
+#     if req and "q" in req:
+#         data = req.post(`https://api.deepai.org/origami-3d-generator`, data={
+#             headers={
+#
+#             }
+#         })
 
 if __name__ == "__main__":
     app.run("0.0.0.0", 3000)
