@@ -31,6 +31,17 @@ def error(err):
     }
 
 
+@app.route("/api/chat/clear", methods=["GET"])
+def clear():
+    gist = fetch_gist()
+    req = request.get_json()
+    if req and "u" in req:
+        gist["prompts"][req.get("u")] = []
+        update_gist(gist)
+        return {"status": 200, "response": "Your past queries are cleared"}
+    return {"status": 404, "response": "The user is undefined"}
+
+
 @app.route("/api/chat/", methods=["POST", "GET"])
 def chat():
     if request.method == "POST":
