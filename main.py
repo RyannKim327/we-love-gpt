@@ -48,6 +48,8 @@ def chat():
         req = request.args
         msgs = [{"role": "user", "content": str(req.get("message"))}]
 
+        if req or not "message" in req:
+            return {"status": 404, "response": "Undefined message query"}
         if req and "u" in req:
             gist = fetch_gist()
             base = gist
@@ -55,8 +57,11 @@ def chat():
             try:
                 if gist["prompts"][req.get("u")]:
                     msgs = gist["prompts"][req.get("u")]
+                    msgs.append({"role": "user", "content": req.get("message")})
             except:
-                gist["prompts"][req.get("u")] = []
+                gist["prompts"][req.get("u")] = [
+                    {"role": "user", "content": req.get("message")}
+                ]
 
         websearch = False
 
