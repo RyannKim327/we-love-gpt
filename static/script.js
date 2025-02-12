@@ -98,30 +98,30 @@ async function _() {
         base.classList.add("bot");
         msg.innerHTML = marked.parse(res.response);
 
-        setTimeout(() => {
-          document.querySelectorAll("pre code").forEach((block) => {
-            const pre = block.parentElement;
-            const btn = document.createElement("button");
-            btn.innerHTML = "Copy <i class='fa-solid fa-copy'></i>";
-            btn.classList.add("copy");
-            btn.onclick = () => {
-              navigator.clipboard.writeText(block.textContent);
-              btn.innerHTML = "Copied <i class='fa-solid fa-check'></i>";
-              setTimeout(() => {
-                btn.innerHTML = "Copy <i class='fa-solid fa-copy'></i>";
-              }, 2500);
-            };
-            // pre.style.position = "relative";
-            pre.appendChild(btn);
-          });
-        }, 500);
+        // setTimeout(() => {
+        //   document.querySelectorAll("pre code").forEach((block) => {
+        //     const pre = block.parentElement;
+        //     const btn = document.createElement("button");
+        //     btn.innerHTML = "Copy <i class='fa-solid fa-copy'></i>";
+        //     btn.classList.add("copy");
+        //     btn.onclick = () => {
+        //       navigator.clipboard.writeText(block.textContent);
+        //       btn.innerHTML = "Copied <i class='fa-solid fa-check'></i>";
+        //       setTimeout(() => {
+        //         btn.innerHTML = "Copy <i class='fa-solid fa-copy'></i>";
+        //       }, 2500);
+        //     };
+        //     // pre.style.position = "relative";
+        //     pre.appendChild(btn);
+        //   });
+        // }, 500);
 
         base.appendChild(msg);
         live.appendChild(base);
         x.disabled = null;
         y.disabled = null;
         setTimeout(() => {
-          const z = document.querySelector("#send");
+          const z = document.querySelector("#live");
           z.scrollTo(0, z.scrollHeight + 100);
           z.scrollIntoView({
             behavior: "smooth",
@@ -187,6 +187,13 @@ document.getElementById("send").addEventListener("keyup", (event) => {
 
     base.appendChild(msg);
     live.appendChild(base);
+    setTimeout(() => {
+      const z = document.querySelector("#live");
+      z.scrollTo(0, z.scrollHeight + 100);
+      z.scrollIntoView({
+        behavior: "smooth",
+      });
+    }, 100);
 
     _();
   }

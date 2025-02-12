@@ -1,118 +1,137 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Welcome to my Vlogg</title>
+    <link rel="stylesheet" type="text/css" href="static/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Welcome to my Vlogg</title>
-  <link rel="stylesheet" type="text/css" href="static/styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-</head>
-
-<body>
-  <div class="base">
-    <div class="main">
-      <div class="header">
-        <h3>We Love GPT API Documentation</h3>
-      </div>
-      <div class="collapsible">
-        <h3>POST: /api/chat</h3>
-      </div>
-      <div class="content">
-        <div class="base-container">
-          <table>
-            <tr>
-              <th>Parameter</th>
-              <th>Type</th>
-              <th>Optional/Value</th>
-            </tr>
-            <tr>
-              <td>messages</td>
-              <td>JSON Array</td>
-              <td>Required</td>
-            </tr>
-            <tr>
-              <td>websearch</td>
-              <td>Boolean</td>
-              <td>Optional</td>
-            </tr>
-            <tr>
-              <th colspan="3" style="text-align: center; padding: 0.5rem">
-                <h3>Parameters of messages</h3>
-              </th>
-            </tr>
-            <tr>
-              <td>role</td>
-              <td>String</td>
-              <td>user | system | assistant</td>
-            </tr>
-            <tr>
-              <td>content</td>
-              <td>String</td>
-              <td>Required</td>
-            </tr>
-          </table>
-          <code>
-            curl -X POST "https://we-love-gpt.onrender.com/api/chat" \ -H
-            "Content-Type: application/json" \ -d '{ "messages": { "role":
-            "user", "content": "Hello, world!" } }'
-          </code>
+  <body>
+    <div class="base">
+      <div class="main">
+        <div class="header">
+          <h3>We Love GPT API Documentation</h3>
+        </div>
+        <div class="collapsible">
+          <h3>POST: /api/chat</h3>
+        </div>
+        <div class="content">
+          <div class="base-container">
+            <table>
+              <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Optional/Value</th>
+              </tr>
+              <tr>
+                <td>messages</td>
+                <td>JSON Array</td>
+                <td>Required</td>
+              </tr>
+              <tr>
+                <td>websearch</td>
+                <td>Boolean</td>
+                <td>Optional</td>
+              </tr>
+              <tr>
+                <th colspan="3" style="text-align: center; padding: 0.5rem">
+                  <h3>Parameters of messages</h3>
+                </th>
+              </tr>
+              <tr>
+                <td>role</td>
+                <td>String</td>
+                <td>user | system | assistant</td>
+              </tr>
+              <tr>
+                <td>content</td>
+                <td>String</td>
+                <td>Required</td>
+              </tr>
+            </table>
+            <code>
+              curl -X POST "https://we-love-gpt.onrender.com/api/chat" \ -H
+              "Content-Type: application/json" \ -d '{ "messages": { "role":
+              "user", "content": "Hello, world!" } }'
+            </code>
+          </div>
+        </div>
+        <div class="collapsible">
+          <h3>GET: /api/chat</h3>
+        </div>
+        <div class="content">
+          <div class="base-container">
+            <table>
+              <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Optional/Value</th>
+              </tr>
+              <tr>
+                <td>message</td>
+                <td>String</td>
+                <td>Required</td>
+              </tr>
+              <tr>
+                <td>websearch</td>
+                <td>Boolean</td>
+                <td>Optional</td>
+              </tr>
+              <tr>
+                <td>u</td>
+                <td>String</td>
+                <td>Optional</td>
+              </tr>
+            </table>
+            <code>
+              https://we-love-gpt.onrender.com/api/chat?message=hello
+            </code>
+          </div>
+          <blockquote>
+            &emsp;The <b><u>u</u></b> parameter defines <b>"UserID"</b> or
+            <b>"Username"</b> which helps to store your data and retrieve
+            anytime. You may response <b>"clear"</b> without any quotation mark
+            as value for <b>message</b> to clear the past messages.
+          </blockquote>
+        </div>
+        <div class="collapsible">
+          <h3>Result</h3>
+        </div>
+        <div class="content">
+          <div class="base-container">
+            <code>
+              // Success<br />{<br />&emsp;"status": 200,<br />&emsp;"response":
+              "Hello"<br />}
+            </code>
+            <code>
+              // Error<br />{<br />&emsp;"status": 404,<br />&emsp;"response":
+              "Some random message about the error"<br />}
+            </code>
+          </div>
+        </div>
+        <div class="collapsible">
+          <h3>Try: Test conversation</h3>
+        </div>
+        <div class="content convo">
+          <div id="live"></div>
+          <div class="chat">
+            <textarea
+              placeholder="Enter your message here"
+              rows="5"
+              type="text"
+              id="send"
+            ></textarea>
+            <button id="send-button">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
         </div>
       </div>
-      <div class="collapsible">
-        <h3>GET: /api/chat</h3>
-      </div>
-      <div class="content">
-        <div class="base-container">
-          <table>
-            <tr>
-              <th>Parameter</th>
-              <th>Type</th>
-              <th>Optional/Value</th>
-            </tr>
-            <tr>
-              <td>message</td>
-              <td>String</td>
-              <td>Required</td>
-            </tr>
-            <tr>
-              <td>websearch</td>
-              <td>Boolean</td>
-              <td>Optional</td>
-            </tr>
-          </table>
-          <code>
-            https://we-love-gpt.onrender.com/api/chat?message=hello
-          </code>
-        </div>
-      </div>
-      <div class="collapsible">
-        <h3>Result</h3>
-      </div>
-      <div class="content">
-        <div class="base-container">
-          <code>
-            {<br />&emsp;"status": 200,<br />&emsp;"response": "Hello"<br />}
-          </code>
-        </div>
-      </div>
-      <div class="collapsible">
-        <h3>Try: Test conversation</h3>
-      </div>
-      <div class="content convo">
-        <div id="live"></div>
-        <div class="chat">
-          <textarea placeholder="Enter your message here" rows="5" type="text" id="send"></textarea>
-          <button id="send-button">
-            <i class="fa-solid fa-paper-plane"></i>
-          </button>
-        </div>
-      </div>
+      <h3>API Created under MPOP Reverse II</h3>
+      <h5>API is not for sale, use for educational purposes.</h5>
     </div>
-    <h3>API Created under MPOP Reverse II</h3>
-    <h5>API is not for sale, use for educational purposes.</h5>
-  </div>
-</body>
-<script src="/static/script.js"></script>
-
+  </body>
+  <script src="/static/script.js"></script>
 </html>
