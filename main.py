@@ -31,15 +31,15 @@ def error(err):
     }
 
 
-@app.route("/api/chat/clear/", methods=["GET"])
-def clear():
-    gist = fetch_gist()
-    req = request.get_json()
-    if req and "u" in req:
-        gist["prompts"][req.get("u")] = []
-        update_gist(gist)
-        return {"status": 200, "response": "Your past queries are cleared"}
-    return {"status": 404, "response": "The user is undefined"}
+# @app.route("/api/chat/clear/", methods=["GET"])
+# def clear():
+#     gist = fetch_gist()
+#     req = request.get_json()
+#     if req and "u" in req:
+#         gist["prompts"][req.get("u")] = []
+#         update_gist(gist)
+#         return {"status": 200, "response": "Your past queries are cleared"}
+#     return {"status": 404, "response": "The user is undefined"}
 
 
 @app.route("/api/chat/", methods=["POST", "GET"])
@@ -64,15 +64,19 @@ def chat():
         if req and "u" in req:
             gist = fetch_gist()
             base = gist
-            # if req.get("u") in gist["users"]:
-            try:
-                if gist["prompts"][req.get("u")]:
-                    msgs = gist["prompts"][req.get("u")]
-                    msgs.append({"role": "user", "content": req.get("message")})
-            except:
-                gist["prompts"][req.get("u")] = [
-                    {"role": "user", "content": req.get("message")}
-                ]
+            if req.get("message") == "clear" or req.get("message") == "cls":
+                gist["prompts"][req.get("u")] = []
+                update_gist(gist)
+                return {"status": 200, "response": "Queries are now cleared"}
+            else:  # if req.get("u") in gist["users"]:
+                try:
+                    if gist["prompts"][req.get("u")]:
+                        msgs = gist["prompts"][req.get("u")]
+                        msgs.append({"role": "user", "content": req.get("message")})
+                except:
+                    gist["prompts"][req.get("u")] = [
+                        {"role": "user", "content": req.get("message")}
+                    ]
 
         websearch = False
 
