@@ -48,7 +48,7 @@ def chat():
         req = request.args
         msgs = [{"role": "user", "content": str(req.get("message"))}]
 
-        if req or not "message" in req:
+        if req and not "message" in req:
             return {"status": 404, "response": "Undefined message query"}
         if req and "u" in req:
             gist = fetch_gist()
