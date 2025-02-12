@@ -1,13 +1,13 @@
-import json
-
 import g4f
 import requests as req
 from flask import Flask, render_template, request
 from g4f.client import Client
-from g4f.Provider.Blackbox import Blackbox
-from werkzeug.datastructures import headers
 
 from utils.gist import fetch_gist, update_gist
+
+# from g4f.Provider.Blackbox import Blackbox
+# from werkzeug.datastructures import headers
+
 
 app = Flask(__name__, static_url_path="/static")
 
@@ -31,7 +31,7 @@ def error(err):
     }
 
 
-@app.route("/api/chat/clear", methods=["GET"])
+@app.route("/api/chat/clear/", methods=["GET"])
 def clear():
     gist = fetch_gist()
     req = request.get_json()
