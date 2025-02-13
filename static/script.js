@@ -171,7 +171,7 @@ document.getElementById("send").addEventListener("keyup", (event) => {
   msgs = JSON.parse(localStorage.getItem("messages")) ?? [];
 
   const y = document.getElementById("send");
-  if (event.keyCode === 13) {
+  if (event.key === "Enter" && !event.shiftKey) {
     event.preventDefault();
     y.blur();
     msgs.push({
