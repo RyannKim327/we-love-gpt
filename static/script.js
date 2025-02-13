@@ -159,7 +159,7 @@ x.addEventListener("click", (event) => {
   const msg = document.createElement("span");
 
   base.classList.add("you");
-  msg.textContent = y.value;
+  msg.innerHTML = y.value.replace(/\n/gi, "<br>");
 
   base.appendChild(msg);
   live.appendChild(base);
@@ -183,7 +183,7 @@ document.getElementById("send").addEventListener("keyup", (event) => {
     const msg = document.createElement("span");
 
     base.classList.add("you");
-    msg.textContent = y.value;
+    msg.innerHTML = y.value.replace(/\n/gi, "<br>");
 
     base.appendChild(msg);
     live.appendChild(base);
@@ -196,6 +196,13 @@ document.getElementById("send").addEventListener("keyup", (event) => {
     }, 100);
 
     _();
+  } else if (event.key === "Tab") {
+    event.preventDefault();
+    const __ = this;
+    const s = __.selectionStart();
+    const e = __.selectionEnd();
+    __.value = __.value.substring(0, s) + "\t" + value.substring(e);
+    __.selectionStart = __.selectionEnd = s + 1;
   }
 });
 
