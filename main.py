@@ -103,6 +103,24 @@ def chat():
         return {"status": 200, "response": response.choices[0].message.content}, 200
 
 
+@app.route("/api/register/<string:id>", methods=["POST", "GET"])
+def register(id):
+    gist = fetch_gist()
+    req = request.args  # request.get_json()
+
+    if gist["prompts"].get(id) == None:
+        gist["prompts"][id] = []
+        if req and "roleplay" in req:
+            gist["prompts"][id] = [
+                {"role": "user", "content": req.get("roleplay")},
+                {"role": "system", "content": "Okay"},
+            ]
+        update_gist(gist)
+        return {"status": 200, "response": f"{id} User ID is now registered"}
+    else:
+        return {"status": 200, "response": "This user is already existed"}
+
+
 # @app.route("/api/vision/", methods=["GET"])
 # def vision():
 #     req = request.get_json()
