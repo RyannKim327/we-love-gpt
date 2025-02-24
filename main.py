@@ -91,12 +91,10 @@ def chat():
         )
 
         if req and "u" in req:
-            msgs.append(
-                {
-                    "role": "system",
-                    "content": response.choices[0].message.content,
-                }
-            )
+            msgs.append({
+                "role": "system",
+                "content": response.choices[0].message.content,
+            })
             base["prompts"][req.get("u")] = msgs
             # gist.get("prompt").get(req.get("u")) = msgs
             update_gist(base)
