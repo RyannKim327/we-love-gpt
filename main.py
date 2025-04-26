@@ -101,7 +101,7 @@ def chat():
         return {"status": 200, "response": response.choices[0].message.content}, 200
 
 
-@app.route("/api/register/<string:id>", methods=["POST", "GET"])
+@app.route("/api/register/<string:id>/", methods=["POST", "GET"])
 def register(id):
     gist = fetch_gist()
     req = request.args  # request.get_json()
@@ -129,5 +129,5 @@ def register(id):
 #             }
 #         })
 
-if __name__ == "__main__":
-    app.run("0.0.0.0", 3000)
+# if __name__ == "__main__":
+#     app.run("0.0.0.0", 3000)
