@@ -1,7 +1,7 @@
 import g4f
 import requests as req
 from flask import Flask, render_template, request
-from g4f.client import Client
+from g4f import Client, Provider
 
 from utils.gist import fetch_gist, update_gist
 
@@ -51,7 +51,10 @@ def chat():
             websearch = req["websearch"]
         client = Client()
         response = client.chat.completions.create(
-            model="gpt-4o-mini", messages=req["messages"], web_search=websearch
+            model="gpt-4",
+            provider=Provider.Yqcloud,
+            web_search=websearch,
+            messages=req["messages"],
         )
         return {"status": 200, "response": response.choices[0].message.content}
     else:
