@@ -77,6 +77,7 @@ async function _() {
         behavior: "smooth",
       });
     }, 100);
+    
 
     fetch("/api/chat/", {
       method: "POST",

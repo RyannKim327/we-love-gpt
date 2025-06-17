@@ -103,6 +103,7 @@ body {
           background-color: #dedede;
           overflow-y: scroll;
           box-sizing: border-box;
+          max-height: 75%;
 
           >div {
             display: flex;

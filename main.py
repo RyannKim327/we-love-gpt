@@ -137,5 +137,8 @@ def register(id):
     else:
         return {"status": 200, "response": "This user is already existed"}
 
+
 if __name__ == "__main__":
     app.run("0.0.0.0", 7000)
+
+# NOTE: To test, execute flask --app main.py --debug run
