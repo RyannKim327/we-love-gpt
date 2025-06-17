@@ -2,15 +2,18 @@ import g4f
 import requests as req
 from flask import Flask, render_template, request
 from g4f import Client, Provider
+import json
+from io import BytesIO
+import base64
 
 from utils.gist import fetch_gist, update_gist
 
 # from g4f.Provider.Blackbox import Blackbox
 # from werkzeug.datastructures import headers
 
+client = Client()
 
 app = Flask(__name__, static_url_path="/static")
-
 
 @app.route("/")
 def main():
@@ -46,13 +49,13 @@ def error(err):
 def chat():
     if request.method == "POST":
         req = request.get_json()
-        websearch = False
+        websearch = True
         if req and "websearch" in req:
             websearch = req["websearch"]
         client = Client()
         response = client.chat.completions.create(
-            model="gpt-4",
-            provider=Provider.Yqcloud,
+            model="qwen-2-5-max",
+            provider=Provider.HuggingSpace,
             web_search=websearch,
             messages=req["messages"],
         )
@@ -81,14 +84,14 @@ def chat():
                         {"role": "user", "content": req.get("message")}
                     ]
 
-        websearch = False
+        websearch = True
 
         if req and "websearch" in req:
             websearch = req.get("websearch")
 
-        client = Client()
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            provider=Provider.HuggingSpace,
+            model="qwen-2-5-max",
             messages=msgs,
             web_search=websearch,
         )
@@ -103,6 +106,19 @@ def chat():
             update_gist(base)
         return {"status": 200, "response": response.choices[0].message.content}, 200
 
+
+@app.route("/api/generate/", methods=["GET"])
+def generate():
+    response = client.images.generate(
+        provider=Provider.ARTA,
+        model="flux",
+        prompt=request.args.get("prompt"),
+        response_format="url"
+    )
+    return {
+        "status": 200,
+        "responses": [i.url for i in response.data]
+    }
 
 @app.route("/api/register/<string:id>/", methods=["POST", "GET"])
 def register(id):
@@ -120,17 +136,6 @@ def register(id):
         return {"status": 200, "response": f"{id} User ID is now registered"}
     else:
         return {"status": 200, "response": "This user is already existed"}
-
-
-# @app.route("/api/vision/", methods=["GET"])
-# def vision():
-#     req = request.get_json()
-#     if req and "q" in req:
-#         data = req.post(`https://api.deepai.org/origami-3d-generator`, data={
-#             headers={
-#
-#             }
-#         })
 
 if __name__ == "__main__":
     app.run("0.0.0.0", 7000)
