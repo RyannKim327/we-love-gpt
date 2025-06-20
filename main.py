@@ -5,15 +5,16 @@ from g4f import Client, Provider
 import json
 from io import BytesIO
 import base64
+from flask_cors import CORS
 
 from utils.gist import fetch_gist, update_gist
-
-# from g4f.Provider.Blackbox import Blackbox
-# from werkzeug.datastructures import headers
 
 client = Client()
 
 app = Flask(__name__, static_url_path="/static")
+
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 
 @app.route("/")
 def main():
@@ -97,10 +98,12 @@ def chat():
         )
 
         if req and "u" in req:
-            msgs.append({
-                "role": "system",
-                "content": response.choices[0].message.content,
-            })
+            msgs.append(
+                {
+                    "role": "system",
+                    "content": response.choices[0].message.content,
+                }
+            )
             base["prompts"][req.get("u")] = msgs
             # gist.get("prompt").get(req.get("u")) = msgs
             update_gist(base)
@@ -113,12 +116,10 @@ def generate():
         provider=Provider.ARTA,
         model="flux",
         prompt=request.args.get("prompt"),
-        response_format="url"
+        response_format="url",
     )
-    return {
-        "status": 200,
-        "responses": [i.url for i in response.data]
-    }
+    return {"status": 200, "responses": [i.url for i in response.data]}
+
 
 @app.route("/api/register/<string:id>/", methods=["POST", "GET"])
 def register(id):
@@ -142,3 +143,4 @@ if __name__ == "__main__":
     app.run("0.0.0.0", 7000)
 
 # NOTE: To test, execute flask --app main.py --debug run
+
