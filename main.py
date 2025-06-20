@@ -1,15 +1,15 @@
-import g4f
-import requests as req
+# import base64
+# import json
+# from io import BytesIO
+#
+# import g4f
+
+# import requests as req
 from flask import Flask, render_template, request
-from g4f import Client, Provider
-import json
-from io import BytesIO
-import base64
 from flask_cors import CORS
+from g4f import Client, Provider
 
 from utils.gist import fetch_gist, update_gist
-
-client = Client()
 
 app = Flask(__name__, static_url_path="/static")
 
@@ -46,8 +46,22 @@ def error(err):
 #     return {"status": 404, "response": "The user is undefined"}
 
 
+def generate_image(prompt):
+    client = Client()
+    response = client.images.generate(
+        provider=Provider.ARTA,
+        model="flux",
+        prompt=prompt,
+        response_format="url",
+    )
+    return response.data[0].url
+    # {"status": 200, "responses": [i.url for i in response.data]}
+
+
 @app.route("/api/chat/", methods=["POST", "GET"])
-def chat():
+def api_chat():
+    client = Client()
+
     if request.method == "POST":
         req = request.get_json()
         websearch = True
@@ -66,7 +80,7 @@ def chat():
         req = request.args
         msgs = [{"role": "user", "content": str(req.get("message"))}]
 
-        if req and not "message" in req:
+        if req and "message" not in req:
             return {"status": 404, "response": "Undefined message query"}
         if req and "u" in req:
             gist = fetch_gist()
@@ -111,11 +125,12 @@ def chat():
 
 
 @app.route("/api/generate/", methods=["GET"])
-def generate():
+def api_generate():
+    client = Client()
     response = client.images.generate(
         provider=Provider.ARTA,
         model="flux",
-        prompt=request.args.get("prompt"),
+        prompt=request.args.get("message"),
         response_format="url",
     )
     return {"status": 200, "responses": [i.url for i in response.data]}
@@ -143,4 +158,3 @@ if __name__ == "__main__":
     app.run("0.0.0.0", 7000)
 
 # NOTE: To test, execute flask --app main.py --debug run
-
