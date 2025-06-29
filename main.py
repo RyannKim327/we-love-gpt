@@ -58,6 +58,22 @@ def generate_image(prompt):
     # {"status": 200, "responses": [i.url for i in response.data]}
 
 
+def checkImager(prompt):
+    if prompt.startswith("generate") or (
+        "create" in prompt
+        and (
+            "image" in prompt
+            or "img" in prompt
+            or "picture" in prompt
+            or "photo" in prompt
+        )
+    ):
+        return {
+            "status": 200,
+            "response": f"**Here's the image you've requested:**<br>![]({generate_image(prompt)})",
+        }
+
+
 @app.route("/api/chat/", methods=["POST", "GET"])
 def api_chat():
     client = Client()
@@ -67,6 +83,12 @@ def api_chat():
         websearch = True
         if req and "websearch" in req:
             websearch = req["websearch"]
+
+        img = checkImager(req["messages"][len(req["messages"]) - 1]["content"])
+
+        if img:
+            return img
+
         client = Client()
         response = client.chat.completions.create(
             model="qwen-2-5-max",
@@ -103,6 +125,11 @@ def api_chat():
 
         if req and "websearch" in req:
             websearch = req.get("websearch")
+
+        img = checkImager(msgs["messages"][len(msgs["messages"]) - 1]["content"])
+
+        if img:
+            return img
 
         response = client.chat.completions.create(
             provider=Provider.HuggingSpace,
