@@ -49,8 +49,8 @@ def error(err):
 def generate_image(prompt):
     client = Client()
     response = client.images.generate(
-        provider=Provider.ARTA,
-        model="flux",
+        # provider=Provider.Copilot,
+        model="gpt-image",
         prompt=prompt,
         response_format="url",
     )
@@ -92,8 +92,8 @@ def api_chat():
 
         client = Client()
         response = client.chat.completions.create(
-            model="qwen-2-5-max",
-            provider=Provider.HuggingSpace,
+            model="llama-3.3-70b",
+            provider=Provider.Together,
             web_search=websearch,
             messages=req["messages"],
         )
@@ -133,8 +133,8 @@ def api_chat():
             return img
 
         response = client.chat.completions.create(
-            provider=Provider.HuggingSpace,
-            model="qwen-2-5-max",
+            # provider=Provider.Together,
+            model="qwen-3-235b",
             messages=msgs,
             web_search=websearch,
         )
