@@ -5,9 +5,7 @@
 # import g4f
 
 import json
-import re
 
-# import requests as req
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from g4f import Client, Provider
@@ -15,6 +13,8 @@ from g4f import Client, Provider
 from utils.gist import fetch_gist, update_gist
 
 app = Flask(__name__, static_url_path="/static")
+text_model = "llama-3.3-70b"
+image_model = "gpt-image"
 
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
@@ -53,7 +53,7 @@ def generate_image(prompt):
     client = Client()
     response = client.images.generate(
         # provider=Provider.Copilot,
-        model="gpt-image",
+        model=image_model,
         prompt=prompt,
         response_format="url",
     )
@@ -65,7 +65,7 @@ def checkImager(prompt):
     client = Client()
     format = {"img": "boolean", "message": "string"}
     response = client.chat.completions.create(
-        model="llama-3.3-70b",
+        model=text_model,
         messages=[
             {
                 "role": "user",
@@ -79,7 +79,7 @@ def checkImager(prompt):
     if res["img"]:
         return {
             "status": 200,
-            "response": f"{res['message']}<br><br>![]({generate_image(res['message'])})",
+            "response": f"{res['message']}<br><br>![generated image]({generate_image(res['message'])})",
         }
 
 
@@ -103,7 +103,7 @@ def api_chat():
 
         client = Client()
         response = client.chat.completions.create(
-            model="llama-3.3-70b",
+            model=text_model,
             # provider=Provider.Together,
             web_search=websearch,
             messages=req["messages"],
@@ -145,7 +145,7 @@ def api_chat():
 
         response = client.chat.completions.create(
             # provider=Provider.Together,
-            model="qwen-3-235b",
+            model=text_model,
             messages=msgs,
             web_search=websearch,
         )
@@ -165,14 +165,7 @@ def api_chat():
 
 @app.route("/api/generate/", methods=["GET"])
 def api_generate():
-    client = Client()
-    response = client.images.generate(
-        provider=Provider.ARTA,
-        model="flux",
-        prompt=request.args.get("message"),
-        response_format="url",
-    )
-    return {"status": 200, "responses": [i.url for i in response.data]}
+    return {"status": 200, "responses": generate_image(request.args.get("message"))}
 
 
 @app.route("/api/register/<string:id>/", methods=["POST", "GET"])
