@@ -69,7 +69,7 @@ def checkImager(prompt):
         messages=[
             {
                 "role": "user",
-                "content": f'I have this prompt: "{prompt}". I want you to identify it based on the format I will give. The format was {json.dumps(format)}. If is that an image, imagine that you\'ve generate the image and give some comments about the prompt or enhance the prompt given which can use a prompt into an image generator model. The response, please `make it one line and remove the unwanted characters to prevent json parse error',
+                "content": f'I have this prompt: "{prompt}". I want you to identify it based on the format I will given. The format was {json.dumps(format)}. If is that an image, imagine that you\'ve generate the image, create a prompt for an image generator that nearly related to the prompt, or enhance the prompt given to make it more understandable by the AI. The response, please `make it one line and remove the unwanted characters to prevent json parse error',
             }
         ],
     )
