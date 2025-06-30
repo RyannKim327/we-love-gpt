@@ -5,7 +5,9 @@
 # import g4f
 
 import json
+from json.decoder import JSONDecodeError
 
+from aiohttp.typedefs import JSONDecoder
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from g4f import Client, Provider
@@ -14,7 +16,7 @@ from utils.gist import fetch_gist, update_gist
 
 app = Flask(__name__, static_url_path="/static")
 text_model = "llama-3.3-70b"
-image_model = "gpt-image"
+image_model = "sdxl-turbo"
 
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
@@ -73,17 +75,19 @@ def checkImager(prompt):
             }
         ],
     )
-    # print(response.choices[0].message.content)
-    res = json.loads(response.choices[0].message.content)
-    # print(res)
-    if res["img"]:
-        return {
-            "status": 200,
-            "response": f"{res['message']}<br><br>![generated image]({generate_image(res['message'])})",
-        }
-
-
-# return ""
+    try:
+        # print(response.choices[0].message.content)
+        res = json.loads(response.choices[0].message.content)
+        # print(res)
+        if res["img"]:
+            generated_image = generate_image(res["message"])
+            return {
+                "status": 200,
+                "response": f"{res['message']}<br><br>![generated image]({generated_image})",
+                "image": generated_image,
+            }
+    except JSONDecodeError as e:
+        return checkImager(prompt)
 
 
 @app.route("/api/chat/", methods=["POST", "GET"])
