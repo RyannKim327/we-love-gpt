@@ -59,14 +59,15 @@ def generate_image(prompt):
 
 
 def checkImager(prompt):
-    if prompt.startswith("generate") or (
-        "create" in prompt
+    if (
+        ("generate" in prompt or "create" in prompt)
         and (
             "image" in prompt
             or "img" in prompt
             or "picture" in prompt
             or "photo" in prompt
         )
+        or prompt.startswith("imagine")
     ):
         return {
             "status": 200,
