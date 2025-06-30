@@ -4,6 +4,9 @@
 #
 # import g4f
 
+import json
+import re
+
 # import requests as req
 from flask import Flask, render_template, request
 from flask_cors import CORS
@@ -59,20 +62,28 @@ def generate_image(prompt):
 
 
 def checkImager(prompt):
-    if (
-        ("generate" in prompt or "create" in prompt)
-        and (
-            "image" in prompt
-            or "img" in prompt
-            or "picture" in prompt
-            or "photo" in prompt
-        )
-        or prompt.startswith("imagine")
-    ):
+    client = Client()
+    format = {"img": "boolean", "message": "string"}
+    response = client.chat.completions.create(
+        model="llama-3.3-70b",
+        messages=[
+            {
+                "role": "user",
+                "content": f'I have this prompt: "{prompt}". I want you to identify it based on the format I will give. The format was {json.dumps(format)}. If is that an image, imagine that you\'ve generate the image and give some comments about the prompt or enhance the prompt given which can use a prompt into an image generator model. The response, please `make it one line and remove the unwanted characters to prevent json parse error',
+            }
+        ],
+    )
+    # print(response.choices[0].message.content)
+    res = json.loads(response.choices[0].message.content)
+    # print(res)
+    if res["img"]:
         return {
             "status": 200,
-            "response": f"**Here's the image you've requested:**<br>![]({generate_image(prompt)})",
+            "response": f"{res['message']}<br><br>![]({generate_image(res['message'])})",
         }
+
+
+# return ""
 
 
 @app.route("/api/chat/", methods=["POST", "GET"])
@@ -93,7 +104,7 @@ def api_chat():
         client = Client()
         response = client.chat.completions.create(
             model="llama-3.3-70b",
-            provider=Provider.Together,
+            # provider=Provider.Together,
             web_search=websearch,
             messages=req["messages"],
         )
