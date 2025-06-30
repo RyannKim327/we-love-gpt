@@ -36,7 +36,7 @@ def error(err):
     return {
         "status": 404,
         "response": "Page not found, kindly check to our documentation",
-        "redirect": "https://we-love-gpt.onrender.com",
+        "redirect": request.host,
     }
 
 
