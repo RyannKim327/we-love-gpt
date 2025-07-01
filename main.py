@@ -1,9 +1,3 @@
-# import base64
-# import json
-# from io import BytesIO
-#
-# import g4f
-
 import json
 from json.decoder import JSONDecodeError
 
@@ -16,7 +10,7 @@ from utils.gist import fetch_gist, update_gist
 
 app = Flask(__name__, static_url_path="/static")
 text_model = "llama-3.3-70b"
-image_model = "sdxl-turbo"
+image_model = "flux"
 
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
@@ -40,17 +34,6 @@ def error(err):
     }
 
 
-# @app.route("/api/chat/clear/", methods=["GET"])
-# def clear():
-#     gist = fetch_gist()
-#     req = request.get_json()
-#     if req and "u" in req:
-#         gist["prompts"][req.get("u")] = []
-#         update_gist(gist)
-#         return {"status": 200, "response": "Your past queries are cleared"}
-#     return {"status": 404, "response": "The user is undefined"}
-
-
 def generate_image(prompt):
     client = Client()
     response = client.images.generate(
@@ -60,7 +43,6 @@ def generate_image(prompt):
         response_format="url",
     )
     return response.data[0].url
-    # {"status": 200, "responses": [i.url for i in response.data]}
 
 
 def checkImager(prompt):
@@ -175,6 +157,9 @@ def api_generate():
 @app.route("/api/register/<string:id>/", methods=["POST", "GET"])
 def register(id):
     gist = fetch_gist()
+    if "error" in gist.keys():
+        return
+
     req = request.args  # request.get_json()
 
     if gist["prompts"].get(id) == None:
