@@ -9,7 +9,7 @@ from g4f import Client, Provider
 from utils.gist import fetch_gist, update_gist
 
 app = Flask(__name__, static_url_path="/static")
-text_model = "llama-3.3-70b"
+text_model = "gpt-4o-mini" # "llama-3.3-70b"
 image_model = "flux"
 
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -47,15 +47,22 @@ def generate_image(prompt):
 
 def checkImager(prompt):
     client = Client()
-    format = {"img": "boolean", "message": "string"}
+    format = json.dumps({"img": "boolean", "message": "string"})
+    msg = [
+        {
+            "role": "user",
+            "content": f"""Check weather last chat or prompt from user is asking for image generator, if the user ask you to generate image please generate, if not then dont generate and return to "img" key is False from the formet I gave to you.
+            Your response must be in single line and with this format: {format}.
+            If is that an image, imagine that you\'ve generate the image, create a prompt for an image generator that nearly related to the prompt, or enhance the prompt given to make it more understandable by the AI.""",
+        }
+    ]
+    # {
+    #             "role": "user",
+    #             "content": f'I have this prompt: "{prompt}". I want you to identify it based on the format I will given. The format was {json.dumps(format)}. If is that an image, imagine that you\'ve generate the image, create a prompt for an image generator that nearly related to the prompt, or enhance the prompt given to make it more understandable by the AI. The response, please `make it one line and remove the unwanted characters to prevent json parse error',
+    #         }
     response = client.chat.completions.create(
         model=text_model,
-        messages=[
-            {
-                "role": "user",
-                "content": f'I have this prompt: "{prompt}". I want you to identify it based on the format I will given. The format was {json.dumps(format)}. If is that an image, imagine that you\'ve generate the image, create a prompt for an image generator that nearly related to the prompt, or enhance the prompt given to make it more understandable by the AI. The response, please `make it one line and remove the unwanted characters to prevent json parse error',
-            }
-        ],
+        messages=msg + prompt
     )
     try:
         # print(response.choices[0].message.content)
@@ -82,7 +89,7 @@ def api_chat():
         if req and "websearch" in req:
             websearch = req["websearch"]
 
-        img = checkImager(req["messages"][len(req["messages"]) - 1]["content"])
+        img = checkImager(req["messages"])
 
         if img:
             return img
@@ -124,7 +131,7 @@ def api_chat():
         if req and "websearch" in req:
             websearch = req.get("websearch")
 
-        img = checkImager(msgs["messages"][len(msgs["messages"]) - 1]["content"])
+        img = checkImager(msgs)
 
         if img:
             return img
