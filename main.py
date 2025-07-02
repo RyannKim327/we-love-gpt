@@ -5,6 +5,7 @@ from aiohttp.typedefs import JSONDecoder
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from g4f import Client, Provider
+from g4f.Provider.hf_space.DeepseekAI_JanusPro7b import Messages
 
 from utils.gist import fetch_gist, update_gist
 
@@ -47,13 +48,15 @@ def generate_image(prompt):
 
 def checkImager(prompt):
     client = Client()
-    format = json.dumps({"img": "boolean", "message": "string"})
+    format = json.dumps({"img": "boolean", "message": "string", "prompt": "string"})
     msg = [
         {
             "role": "user",
-            "content": f"""Check weather last chat or prompt from user is asking for image generator, if the user ask you to generate image please generate, if not then dont generate and return to "img" key is False from the formet I gave to you.
-      Your response must be in single line and with this format: {format}.
-      If is that an image, imagine that you\'ve generate the image, create a prompt, and explain and identify what about to request for an image generator that nearly related to the prompt, or enhance the prompt given to make it more understandable by the AI.""",
+            "content": f"""Check weather last chat or prompt from user is asking for image generator, if the user ask you to generate image please generate, if not then dont generate and return to "img" key is False from the format I gave to you.
+    Your response must be in single line and with this format: {format}.
+    This was a strict method to identify if the user still asking to generate image, so please I want you to identify it clearly.
+    If is that an image, imagine that you\'ve generate the image, create a prompt, and explain and identify detail by detail what about to request for an image generator that nearly related to the prompt, or enhance the prompt given to make it more understandable by the AI.
+    """.strip(),
         }
     ]
     #   {
@@ -66,91 +69,90 @@ def checkImager(prompt):
         res = json.loads(response.choices[0].message.content)
         # print(res)
         if res["img"]:
-            generated_image = generate_image(res["message"])
+            generated_image = generate_image(res["prompt"])
             return {
                 "status": 200,
-                "response": f"{res['message']}<br><br>![generated image]({generated_image})",
+                "response": f"{res['message']}<br>Prompt: {res['prompt']}<br><br>![generated image]({generated_image})",
                 "image": generated_image,
             }
     except JSONDecodeError as e:
         return checkImager(prompt)
 
 
+def chat_handler(prompt, websearch=True):
+    client = Client()
+    img = checkImager(prompt)
+
+    if img:
+        return img
+
+    response = client.chat.completions.create(
+        # provider=Provider.Together,
+        model=text_model,
+        messages=prompt,
+        web_search=websearch,
+    )
+    return {"status": 200, "response": response.choices[0].message.content}
+
+
 @app.route("/api/chat/", methods=["POST", "GET"])
 def api_chat():
-    client = Client()
+    messages = []
+    websearch = True
 
     if request.method == "POST":
+        # TODO: Post Request
+
         req = request.get_json()
-        websearch = True
+        messages = req["messages"]
+
         if req and "websearch" in req:
             websearch = req["websearch"]
 
-        img = checkImager(req["messages"])
-
-        if img:
-            return img
-
-        client = Client()
-        response = client.chat.completions.create(
-            model=text_model,
-            # provider=Provider.Together,
-            web_search=websearch,
-            messages=req["messages"],
-        )
-        return {"status": 200, "response": response.choices[0].message.content}
     else:
+        # TODO: Get Request
+
         base = {}
         req = request.args
-        msgs = [{"role": "user", "content": str(req.get("message"))}]
 
         if req and "message" not in req:
             return {"status": 404, "response": "Undefined message query"}
+
         if req and "u" in req:
+            # TODO: To identify if there's a user from a get request
+
             gist = fetch_gist()
             base = gist
-            if req.get("message") == "clear" or req.get("message") == "cls":
+
+            # TODO: Clear all past prompts
+            if req.get("message") == "/clear" or req.get("message") == "/cls":
                 gist["prompts"][req.get("u")] = []
                 update_gist(gist)
                 return {"status": 200, "response": "Queries are now cleared"}
-            else:  # if req.get("u") in gist["users"]:
+
+            else:
+                # TODO: To handle user and data information...
+
                 try:
                     if gist["prompts"][req.get("u")]:
-                        msgs = gist["prompts"][req.get("u")]
-                        msgs.append({"role": "user", "content": req.get("message")})
+                        messages = gist["prompts"][req.get("u")]
+                        messages.append({"role": "user", "content": req.get("message")})
+
                 except:
                     gist["prompts"][req.get("u")] = [
                         {"role": "user", "content": req.get("message")}
                     ]
 
-        websearch = True
+        messages.append({"role": "user", "content": str(req.get("message"))})
 
         if req and "websearch" in req:
             websearch = req.get("websearch")
 
-        img = checkImager(msgs)
-
-        if img:
-            return img
-
-        response = client.chat.completions.create(
-            # provider=Provider.Together,
-            model=text_model,
-            messages=msgs,
-            web_search=websearch,
-        )
-
         if req and "u" in req:
-            msgs.append(
-                {
-                    "role": "system",
-                    "content": response.choices[0].message.content,
-                }
-            )
-            base["prompts"][req.get("u")] = msgs
-            # gist.get("prompt").get(req.get("u")) = msgs
             update_gist(base)
-        return {"status": 200, "response": response.choices[0].message.content}, 200
+
+    chat = chat_handler(messages, websearch)
+    return chat
 
 
 @app.route("/api/generate/", methods=["GET"])
