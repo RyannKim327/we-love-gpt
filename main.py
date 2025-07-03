@@ -50,9 +50,9 @@ def checkImager(prompt):
     msg = [
         {
             "role": "user",
-            "content": f"""Check weather last chat or prompt from user is asking for image generator, if the user ask you to generate image please generate, if not then dont generate and return to "img" key is False from the format I gave to you.
+            "content": f"""Check weather the prompt from user is asking for image generator, if the user ask you to generate image please generate, if not then dont generate and return to "img" key is False from the format I gave to you.
     Your response must be in single line and with this format: {format}.
-    This was a strict method to identify if the user still asking to generate image, so please I want you to identify it clearly.
+    This was a strict method to identify if the user still asking to generate image, to know that, observe the last prompt if it ask for image or not.
     If is that an image, imagine that you\'ve generate the image, create a prompt, and explain and identify detail by detail what about to request for an image generator that nearly related to the prompt, or enhance the prompt given to make it more understandable by the AI.
     """.strip(),
         }
