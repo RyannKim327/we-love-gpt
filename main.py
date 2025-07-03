@@ -1,11 +1,9 @@
 import json
 from json.decoder import JSONDecodeError
 
-from aiohttp.typedefs import JSONDecoder
 from flask import Flask, render_template, request
 from flask_cors import CORS
-from g4f import Client, Provider
-from g4f.Provider.hf_space.DeepseekAI_JanusPro7b import Messages
+from g4f import Client
 
 from utils.gist import fetch_gist, update_gist
 
