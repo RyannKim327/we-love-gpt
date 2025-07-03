@@ -68,7 +68,7 @@ def checkImager(prompt):
         # print(response.choices[0].message.content)
         res = json.loads(response.choices[0].message.content)
         # print(res)
-        if res["img"]:
+        if res["img"] and len(res["prompt"]) > 10:
             generated_image = generate_image(res["prompt"])
             return {
                 "status": 200,
