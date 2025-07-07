@@ -52,7 +52,7 @@
               </tr>
             </table>
             <code>
-              curl -X POST "https://api-freegpt.onrender.com/api/chat" \ -H
+              curl -X POST "https://{{ url }}/api/chat" \ -H
               "Content-Type: application/json" \ -d '{ "messages": { "role":
               "user", "content": "Hello, world!" } }'
             </code>
@@ -86,7 +86,7 @@
               </tr>
             </table>
             <code>
-              https://api-freegpt.onrender.com/api/chat?message=hello
+              https://{{ url }}/api/chat?message=hello
             </code>
           </div>
           <blockquote>

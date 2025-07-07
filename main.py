@@ -22,7 +22,7 @@ def main():
 
 @app.route("/api")
 def app1():
-  return render_template("index.html")
+  return render_template("index.html", url=request.host)
 
 
 @app.errorhandler(404)
