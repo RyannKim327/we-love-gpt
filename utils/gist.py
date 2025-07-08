@@ -4,8 +4,6 @@
   Purpose: A handler for gist data
 """
 
-
-
 import json
 import os
 
