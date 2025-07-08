@@ -8,12 +8,13 @@ GIST_ID = os.getenv("GIST_ID")
 FILE_NAME = os.getenv("FILE")
 
 
-def fetch_gist() -> dict:
+def fetch_gist() -> dict: 
   if not GITHUB_TOKEN or not GIST_ID or not FILE_NAME:
     print("Missing required environment variables.")
     return {"error": "Missing required environment variables."}
 
   url = f"https://api.github.com/gists/{GIST_ID}"
+
   headers = {
     "Authorization": f"token {GITHUB_TOKEN}",
     "Accept": "application/vnd.github.v3+json",

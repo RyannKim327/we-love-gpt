@@ -162,8 +162,11 @@ def api_generate():
 @app.route("/api/register/<string:id>/", methods=["POST", "GET"])
 def register(id):
     gist = fetch_gist()
+    if gist:
+        return { "status": 400, "response": "Invalid GIST"}
+
     if "error" in gist.keys():
-        return
+        return { "status": 400, "response": "Invalid GIST"}
 
     req = request.args  # request.get_json()
 
