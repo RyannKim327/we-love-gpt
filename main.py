@@ -159,7 +159,7 @@ def api_generate():
     return {"status": 200, "responses": generate_image(request.args.get("message"))}
 
 
-@app.route("/api/register/<string:id>/", methods=["POST", "GET"])
+@app.route("/register/<string:id>/", methods=["POST", "GET"])
 def register(id):
     gist = fetch_gist()
     if gist:
