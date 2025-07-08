@@ -1,8 +1,15 @@
+""" INFO:
+    Author: @RyannKim327
+    Date Modified: 07-08-2025
+    Purpose: A handler for text based generated response
+"""
+
+
 from core.image import checkImager
 from g4f.client import Client
 from utils.setup import text_model
 
-def chat_handler(prompt, websearch=True):
+def chat_handler(prompt, websearch=False):
     client = Client()
     img = checkImager(prompt)
 

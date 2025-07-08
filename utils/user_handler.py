@@ -1,3 +1,9 @@
+""" INFO:
+  Author: @RyannKim327
+  Date Modified: 07-08-2025
+  Purpose: A handler user management
+"""
+
 from utils.gist import *
 
 def register(req, id):

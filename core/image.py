@@ -1,3 +1,10 @@
+""" INFO:
+    Author: @RyannKim327
+    Date Modified: 07-08-2025
+    Purpose: A handler for image and text generator and to identify if the user ask for image
+"""
+
+
 from g4f.client import Client
 import json
 from json.decoder import JSONDecodeError
@@ -6,7 +13,6 @@ from utils.setup import text_model, image_model
 def generate_image(prompt):
     client = Client()
     response = client.images.generate(
-        # provider=Provider.Copilot,
         model=image_model,
         prompt=prompt,
         response_format="url",
@@ -27,17 +33,18 @@ def checkImager(prompt):
     """.strip(),
         }
     ]
-    response = client.chat.completions.create(model=text_model, messages=msg + prompt)
+    response = client.chat.completions.create(model=text_model, messages=(msg + prompt))
 
     try:
         res = json.loads(response.choices[0].message.content)
         if res["img"] and len(res["prompt"]) > 10:
             generated_image = generate_image(res["prompt"])
+
             return {
                 "status": 200,
                 "response": f"{res['message']}<br>Prompt: {res['prompt']}<br><br>![generated image]({generated_image})",
                 "image": generated_image,
             }
+        
     except JSONDecodeError as e:
         return checkImager(prompt)
-

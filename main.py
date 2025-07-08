@@ -1,9 +1,15 @@
+""" INFO:
+  Author: @RyannKim327
+  Date Modified: 07-08-2025
+  Purpose: Main process where the system works
+"""
+
 from flask import Flask, render_template, request
 from flask_cors import CORS
-from utils.gist import fetch_gist, update_gist
 from utils.user_handler import register
 
 from utils.handler import get_chat_handler, post_chat_handler
+from core.image import generate_image
 
 app = Flask(__name__, static_url_path="/static")
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -28,7 +34,7 @@ def error(err):
 
 @app.route("/api/chat/", methods=["POST", "GET"])
 def api_chat():
-    websearch = True
+    websearch = False
 
     if request.method == "POST":
         # TODO: Post Request
@@ -43,8 +49,7 @@ def api_chat():
 
     else:
         # TODO: Get Request
-
-        return get_chat_handler()
+        return get_chat_handler(request.args.get("message"))
 
 
 @app.route("/api/generate/", methods=["GET"])

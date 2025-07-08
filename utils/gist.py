@@ -1,3 +1,11 @@
+""" INFO:
+  Author: @RyannKim327
+  Date Modified: 07-08-2025
+  Purpose: A handler for gist data
+"""
+
+
+
 import json
 import os
 
