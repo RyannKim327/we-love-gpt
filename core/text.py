@@ -1,13 +1,14 @@
-""" INFO:
-    Author: @RyannKim327
-    Date Modified: 07-08-2025
-    Purpose: A handler for text based generated response
+"""INFO:
+Author: @RyannKim327
+Date Modified: 07-08-2025
+Purpose: A handler for text based generated response
 """
 
+from g4f.client import Client
 
 from core.image import checkImager
-from g4f.client import Client
 from utils.setup import text_model
+
 
 def chat_handler(prompt, websearch=False):
     client = Client()
@@ -22,4 +23,8 @@ def chat_handler(prompt, websearch=False):
         messages=prompt,
         web_search=websearch,
     )
-    return {"status": 200, "response": response.choices[0].message.content}
+    return {
+        "status": 200,
+        "text": response.choices[0].message.content,
+        "response": response.choices[0].message.content,
+    }

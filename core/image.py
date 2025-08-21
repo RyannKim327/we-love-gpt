@@ -1,14 +1,16 @@
-""" INFO:
-    Author: @RyannKim327
-    Date Modified: 07-08-2025
-    Purpose: A handler for image and text generator and to identify if the user ask for image
+"""INFO:
+Author: @RyannKim327
+Date Modified: 07-08-2025
+Purpose: A handler for image and text generator and to identify if the user ask for image
 """
 
-
-from g4f.client import Client
 import json
 from json.decoder import JSONDecodeError
-from utils.setup import text_model, image_model
+
+from g4f.client import Client
+
+from utils.setup import image_model, text_model
+
 
 def generate_image(prompt):
     client = Client()
@@ -18,6 +20,7 @@ def generate_image(prompt):
         response_format="url",
     )
     return response.data[0].url
+
 
 def checkImager(prompt):
     client = Client()
@@ -42,9 +45,11 @@ def checkImager(prompt):
 
             return {
                 "status": 200,
+                "text": res["message"],
+                "propmpt": f"{res['message']}\nPropmpt: {res['propmpt']}",
                 "response": f"{res['message']}<br>Prompt: {res['prompt']}<br><br>![generated image]({generated_image})",
                 "image": generated_image,
             }
-        
+
     except JSONDecodeError as e:
         return checkImager(prompt)
