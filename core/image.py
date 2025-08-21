@@ -46,7 +46,7 @@ def checkImager(prompt):
             return {
                 "status": 200,
                 "text": res["message"],
-                "propmpt": f"{res['message']}\nPropmpt: {res['propmpt']}",
+                "prompt": f"{res['message']}\nPrompt: {res['prompt']}",
                 "response": f"{res['message']}<br>Prompt: {res['prompt']}<br><br>![generated image]({generated_image})",
                 "image": generated_image,
             }
