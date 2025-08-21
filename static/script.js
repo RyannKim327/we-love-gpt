@@ -77,7 +77,6 @@ async function _() {
         behavior: "smooth",
       });
     }, 100);
-    
 
     fetch("/api/chat/", {
       method: "POST",
@@ -130,7 +129,7 @@ async function _() {
         }, 100);
         msgs.push({
           role: "system",
-          content: res.response,
+          content: res.propmt ?? res.response,
         });
         localStorage.setItem("messages", JSON.stringify(msgs, null, 2));
         y.focus();
